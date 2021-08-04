@@ -1,0 +1,78 @@
+{% extends 'baseBox.html' %}
+
+{% block title %}Boxes{% endblock title %}
+
+{% block content %}
+    <div class="box-modal">
+        <div class="msg-modal">
+            
+            <h3 class="dlt-title-modal">Deseja deletar esta Box?</h3>
+            
+            <div class="input-modal">
+                <input type="button" class="dlt-btn-modal-csl" value="Não" />
+                <input type="button" class="dlt-btn-modal-cfm" value="Sim" />
+            </div>           
+        </div>
+    </div>
+    
+    <div class="offset-1 col-10 list-div">
+        <h1>Boxes</h1>
+        <div class="container">    
+            <a class="add-link" href="newBox/">
+                <div class="col-2 add-div">
+                    <i class="fas fa-plus"></i>
+                    <span class="paragrafo">Novo Box</span>
+                </div>
+            </a>
+
+            <div class="col-9 busca-div">
+                <form method="GET" id="search-form"> 
+                    <input class="form-control" type="text" id="busca" name="busca" placeholder="Buscar Box" value="{{ request.GET.busca }}"/>
+                    <i class="fas fa-search" id="search-btn"></i>
+                </form>
+            </div>
+        </div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}>
+                        {{message}}
+                        <i class="far fa-times-circle"></i>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <ul class="box-list">
+            {% for box in boxes %}
+            <li class="box-item">
+                <span>{{ box.title }}</span>
+                <span><a href="delete/{{box.id}}" class="delete-btn"><i class="fas fa-trash"></a></i></span>
+                <span><a href="edit/{{box.id}}"><i class="far fa-edit"></i></a></span>
+                <span><a href="pages/{{box.id}}"><i class="fas fa-file"></i></a></span>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if boxes.has_previous %}
+                    <a href="?page={{ boxes.previous_page_number }}"><i class="fas fa-angle-double-left"></i></a>
+                {% endif %}
+
+                {% if boxes.paginator.num_pages %}
+                    <span class="current">
+                        {{ boxes.number }} de {{ boxes.paginator.num_pages }}
+                    </span>
+                {% endif %}
+
+                {% if boxes.has_next %}
+                    <a href="?page={{ boxes.next_page_number }}"><i class="fas fa-angle-double-right"></i></a>
+                {% endif %}
+
+
+            </span>
+        </div>
+    </div>
+
+{% endblock content %}
